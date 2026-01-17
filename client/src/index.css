@@ -1,0 +1,222 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* 
+Design Philosophy: Cartoon Explosion Lab
+- Thick black outlines on everything (3-5px)
+- Bright saturated colors (hot pink, lime green, electric blue, sunny yellow)
+- Wobbly, organic shapes with hand-drawn quality
+- Bouncy, elastic animations with squash-and-stretch
+- Playful imperfection - nothing perfectly aligned
+*/
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  /* Cartoon color palette - bright and saturated */
+  --primary: oklch(0.65 0.25 330); /* Hot pink */
+  --primary-foreground: oklch(0.98 0.01 330);
+  --secondary: oklch(0.75 0.20 130); /* Lime green */
+  --secondary-foreground: oklch(0.15 0.02 130);
+  --accent: oklch(0.70 0.22 250); /* Electric blue */
+  --accent-foreground: oklch(0.98 0.01 250);
+  --destructive: oklch(0.72 0.24 30); /* Sunny yellow */
+  --destructive-foreground: oklch(0.15 0.02 30);
+  
+  --background: oklch(0.98 0.01 280);
+  --foreground: oklch(0.15 0.02 280);
+  --card: oklch(0.99 0.005 280);
+  --card-foreground: oklch(0.15 0.02 280);
+  --popover: oklch(0.99 0.005 280);
+  --popover-foreground: oklch(0.15 0.02 280);
+  --muted: oklch(0.92 0.01 280);
+  --muted-foreground: oklch(0.45 0.02 280);
+  --border: oklch(0.20 0.02 280);
+  --input: oklch(0.92 0.01 280);
+  --ring: oklch(0.65 0.25 330);
+  
+  --sidebar-primary: oklch(0.65 0.25 330);
+  --sidebar-primary-foreground: oklch(0.98 0.01 330);
+  --sidebar: oklch(0.99 0.005 280);
+  --sidebar-foreground: oklch(0.15 0.02 280);
+  --sidebar-accent: oklch(0.92 0.01 280);
+  --sidebar-accent-foreground: oklch(0.15 0.02 280);
+  --sidebar-border: oklch(0.20 0.02 280);
+  --sidebar-ring: oklch(0.65 0.25 330);
+  
+  --chart-1: oklch(0.65 0.25 330);
+  --chart-2: oklch(0.75 0.20 130);
+  --chart-3: oklch(0.70 0.22 250);
+  --chart-4: oklch(0.72 0.24 30);
+  --chart-5: oklch(0.68 0.23 280);
+  
+  /* Wobbly, cartoon-style border radius */
+  --radius: 1.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Nunito', sans-serif;
+  }
+  
+  /* Cartoon-style typography hierarchy */
+  h1, h2, h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+  }
+  
+  h4, h5, h6 {
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 600;
+  }
+  
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+  
+  /* Breathing animation for playful elements */
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  
+  /* Wobble animation */
+  @keyframes wobble {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-3deg); }
+    75% { transform: rotate(3deg); }
+  }
+  
+  /* Bounce in animation */
+  @keyframes bounceIn {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  
+  /* Twerk animation for Pikachu */
+  @keyframes twerk {
+    0%, 100% { transform: rotate(-5deg) translateY(0); }
+    25% { transform: rotate(5deg) translateY(-8px); }
+    50% { transform: rotate(-5deg) translateY(0); }
+    75% { transform: rotate(5deg) translateY(-8px); }
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 1280px;
+    }
+  }
+  
+  /* Cartoon-style thick borders */
+  .cartoon-border {
+    border: 4px solid oklch(0.15 0.02 280);
+  }
+  
+  /* Cartoon-style shadow (offset solid shadow) */
+  .cartoon-shadow {
+    box-shadow: 6px 6px 0px oklch(0.15 0.02 280);
+  }
+  
+  /* Wobbly blob shape */
+  .blob-shape {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+}
+
+/* Crazy Mode Animations */
+@keyframes shake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  10% { transform: translate(-10px, -10px) rotate(-1deg); }
+  20% { transform: translate(10px, 10px) rotate(1deg); }
+  30% { transform: translate(-10px, 10px) rotate(-1deg); }
+  40% { transform: translate(10px, -10px) rotate(1deg); }
+  50% { transform: translate(-10px, -10px) rotate(-1deg); }
+  60% { transform: translate(10px, 10px) rotate(1deg); }
+  70% { transform: translate(-10px, 10px) rotate(-1deg); }
+  80% { transform: translate(10px, -10px) rotate(1deg); }
+  90% { transform: translate(-10px, -10px) rotate(-1deg); }
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(100px, -50px) rotate(90deg); }
+  50% { transform: translate(-50px, 100px) rotate(180deg); }
+  75% { transform: translate(50px, 50px) rotate(270deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
