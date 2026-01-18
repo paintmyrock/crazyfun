@@ -19,6 +19,7 @@ import {
   PikachuDanceParty,
   DanceBattleArena,
   RandomFactCard,
+  BattleGameCard,
 } from "@/components/games";
 
 type ColorMode = "normal" | "crazy";
@@ -93,6 +94,7 @@ export default function Home() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <BattleGameCard floating={flyingElements} />
           <SillySoundMachine floating={flyingElements} />
           <SillyFaceMaker floating={flyingElements} />
           <PikachuDanceParty floating={flyingElements} />

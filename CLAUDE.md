@@ -38,7 +38,24 @@ crazyfun/
 │   │   └── images/          # Pokemon and activity images
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── games/       # Game components (5 mini-games)
+│   │   │   ├── battle/      # Crazy Fusion Battler game
+│   │   │   │   ├── components/  # Shared battle components
+│   │   │   │   │   ├── EntityCard.tsx
+│   │   │   │   │   ├── FusionCard.tsx
+│   │   │   │   │   └── HealthBar.tsx
+│   │   │   │   ├── screens/     # Battle game screens
+│   │   │   │   │   ├── Arena.tsx
+│   │   │   │   │   ├── BattleScreen.tsx
+│   │   │   │   │   ├── Collection.tsx
+│   │   │   │   │   ├── FusionCreator.tsx
+│   │   │   │   │   ├── MainMenu.tsx
+│   │   │   │   │   └── TrainerCreation.tsx
+│   │   │   │   ├── ui/          # Battle-specific UI
+│   │   │   │   │   ├── PixelButton.tsx
+│   │   │   │   │   └── PixelPanel.tsx
+│   │   │   │   └── BattleGame.tsx
+│   │   │   ├── games/       # Mini-game components
+│   │   │   │   ├── BattleGameCard.tsx
 │   │   │   │   ├── DanceBattleArena.tsx
 │   │   │   │   ├── GameCard.tsx
 │   │   │   │   ├── PikachuDanceParty.tsx
@@ -52,16 +69,24 @@ crazyfun/
 │   │   │   │   └── tooltip.tsx
 │   │   │   └── ErrorBoundary.tsx
 │   │   ├── contexts/
-│   │   │   └── ThemeContext.tsx
+│   │   │   ├── ThemeContext.tsx
+│   │   │   └── TrainerContext.tsx  # Battle game state
 │   │   ├── data/
+│   │   │   ├── battle/      # Battle game data
+│   │   │   │   ├── entities.ts   # Base animals & objects
+│   │   │   │   └── types.ts      # TypeScript interfaces
 │   │   │   └── gameData.ts  # Constants (sounds, facts, faces)
 │   │   ├── lib/
 │   │   │   └── utils.ts     # Tailwind utilities
 │   │   ├── pages/
+│   │   │   ├── BattlePage.tsx
 │   │   │   ├── Home.tsx     # Main page
 │   │   │   └── NotFound.tsx
 │   │   ├── utils/
-│   │   │   └── audio.ts     # Web Audio API utilities
+│   │   │   ├── audio.ts     # Web Audio API utilities
+│   │   │   └── battle/      # Battle game utilities
+│   │   │       ├── battleEngine.ts
+│   │   │       └── fusionKey.ts
 │   │   ├── App.tsx
 │   │   ├── index.css        # Tailwind + custom styles
 │   │   └── main.tsx         # Entry point
@@ -102,12 +127,60 @@ crazyfun/
 3. **Pikachu Twerk Party** - Animated dancing Pikachu
 4. **Dance Battle Arena** - Vote for your favorite dancing Pokemon
 5. **Random Fun Facts** - Displays silly animal facts
+6. **Crazy Fusion Battler** - Full-featured creature battler game (see below)
 
 ### Crazy Mode
 Activating "Crazy Mode" triggers:
 - Confetti explosion
 - Screen shake animation
 - Floating/flying elements
+
+---
+
+## Crazy Fusion Battler
+
+A deterministic fusion creature battler designed for kids ages 7-12. Accessible at `/battle`.
+
+### Game Flow
+1. **Trainer Creation** - Username + avatar selection
+2. **Main Menu** - Hub to access Fusion Lab, Collection, Arena
+3. **Fusion Creator** - Combine 2 entities (animals/objects) to create fusions
+4. **Collection** - View saved fusions with win/loss stats
+5. **Arena** - Select fighter and opponent, then battle
+6. **Battle Screen** - Turn-based combat with move selection
+
+### Core Mechanics
+
+**Entity Types**: Fire, Water, Electric, Earth, Air, Cosmic, Mechanical, Toxic
+- 10 base animals (Rhino, Eagle, Shark, Dragon, Wolf, Tiger, Octopus, Phoenix, Turtle, Eel)
+- 5 base objects (Skateboard, Robot, Crystal, Volcano, Thunder Cloud)
+
+**Fusion System**:
+- Deterministic: Same pair always produces same fusion
+- Stats calculated as weighted average with bonus
+- Types combined from both parent entities
+- Moves inherited (2 from each parent)
+
+**Battle System**:
+- Turn-based with type effectiveness (1.5x super effective, 0.67x not very effective)
+- Speed stat determines first turn
+- AI opponent with move selection logic
+- XP rewards and win/loss tracking
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `data/battle/types.ts` | TypeScript interfaces, type chart, colors |
+| `data/battle/entities.ts` | Base animals and objects with stats/moves |
+| `utils/battle/fusionKey.ts` | Fusion creation logic |
+| `utils/battle/battleEngine.ts` | Battle mechanics (damage, turns, AI) |
+| `contexts/TrainerContext.tsx` | Trainer state with localStorage persistence |
+
+### Design Notes
+- Pixel-art aesthetic with custom PixelButton/PixelPanel components
+- Emoji-based creature representation
+- All state persisted to localStorage
 
 ---
 
@@ -184,4 +257,4 @@ pnpm preview
 
 ---
 
-*Last updated: January 17, 2026*
+*Last updated: January 18, 2026*
