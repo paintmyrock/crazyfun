@@ -28,6 +28,7 @@ const PLAYER_NAMES: Record<Player, string> = {
 
 export function TicTacToe({ floating = false }: TicTacToeProps) {
   const [gameMode, setGameMode] = useState<GameMode | null>(null);
+  const [humanPlayer, setHumanPlayer] = useState<Player | null>(null);
   const [gameState, setGameState] = useState<GameState>({
     board: createEmptyBoard(),
     currentPlayer: "diglett",
@@ -38,6 +39,8 @@ export function TicTacToe({ floating = false }: TicTacToeProps) {
   });
   const [recentMove, setRecentMove] = useState<number | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
+
+  const cpuPlayer: Player = humanPlayer === "diglett" ? "magikarp" : "diglett";
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -108,29 +111,29 @@ export function TicTacToe({ floating = false }: TicTacToeProps) {
         ...gameState,
         board: newBoard,
         currentPlayer: nextPlayer,
-        moveLock: gameMode === "cpu" && nextPlayer === "magikarp",
+        moveLock: gameMode === "cpu" && nextPlayer === cpuPlayer,
       });
     }
-  }, [gameState, gameMode, celebrateWin]);
+  }, [gameState, gameMode, celebrateWin, cpuPlayer]);
 
   // CPU move effect
   useEffect(() => {
     if (
       gameMode === "cpu" &&
-      gameState.currentPlayer === "magikarp" &&
+      gameState.currentPlayer === cpuPlayer &&
       gameState.status === "playing" &&
       gameState.moveLock
     ) {
       const delay = 600 + Math.random() * 400;
       const timer = setTimeout(() => {
-        const cpuMove = getCpuMove(gameState.board, "magikarp");
-        if (cpuMove !== null) {
-          makeMove(cpuMove);
+        const move = getCpuMove(gameState.board, cpuPlayer);
+        if (move !== null) {
+          makeMove(move);
         }
       }, delay);
       return () => clearTimeout(timer);
     }
-  }, [gameMode, gameState, makeMove]);
+  }, [gameMode, gameState, makeMove, cpuPlayer]);
 
   const resetGame = () => {
     setGameState({
@@ -146,7 +149,21 @@ export function TicTacToe({ floating = false }: TicTacToeProps) {
 
   const backToMenu = () => {
     setGameMode(null);
+    setHumanPlayer(null);
     resetGame();
+  };
+
+  const selectCharacter = (player: Player) => {
+    setHumanPlayer(player);
+    // Human always goes first
+    setGameState({
+      board: createEmptyBoard(),
+      currentPlayer: player,
+      winner: null,
+      winningLine: null,
+      status: "playing",
+      moveLock: false,
+    });
   };
 
   // Mode selection screen
@@ -187,6 +204,52 @@ export function TicTacToe({ floating = false }: TicTacToeProps) {
               VS CPU
             </Button>
           </div>
+        </div>
+      </GameCard>
+    );
+  }
+
+  // Character selection screen
+  if (humanPlayer === null) {
+    return (
+      <GameCard floating={floating}>
+        <div className="text-center">
+          <h3 className="text-2xl font-bold mb-2 text-card-foreground">
+            Choose Your Fighter!
+          </h3>
+          <p className="text-md mb-6 text-muted-foreground">
+            {gameMode === "cpu" ? "You go first!" : "Player 1, pick your character!"}
+          </p>
+
+          <div className="flex justify-center gap-6 mb-6">
+            <button
+              onClick={() => selectCharacter("diglett")}
+              className="flex flex-col items-center p-4 rounded-2xl cartoon-border bg-card hover:bg-amber-100 transition-colors"
+            >
+              <div className="w-24 h-24">
+                <Diglett animate={false} reduced={reducedMotion} />
+              </div>
+              <span className="text-lg font-bold mt-2 text-card-foreground">Diglett</span>
+            </button>
+
+            <button
+              onClick={() => selectCharacter("magikarp")}
+              className="flex flex-col items-center p-4 rounded-2xl cartoon-border bg-card hover:bg-orange-100 transition-colors"
+            >
+              <div className="w-24 h-24">
+                <Magikarp animate={false} reduced={reducedMotion} />
+              </div>
+              <span className="text-lg font-bold mt-2 text-card-foreground">Magikarp</span>
+            </button>
+          </div>
+
+          <Button
+            onClick={backToMenu}
+            variant="outline"
+            className="cartoon-border font-bold"
+          >
+            Back
+          </Button>
         </div>
       </GameCard>
     );
