@@ -20,6 +20,7 @@ import {
   DanceBattleArena,
   RandomFactCard,
   BattleGameCard,
+  TicTacToe,
 } from "@/components/games";
 
 type ColorMode = "normal" | "crazy";
@@ -95,6 +96,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           <BattleGameCard floating={flyingElements} />
+          <TicTacToe floating={flyingElements} />
           <SillySoundMachine floating={flyingElements} />
           <SillyFaceMaker floating={flyingElements} />
           <PikachuDanceParty floating={flyingElements} />
