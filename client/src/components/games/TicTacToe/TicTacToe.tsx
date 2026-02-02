@@ -66,7 +66,7 @@ export function TicTacToe({ floating = false }: TicTacToeProps) {
   }, []);
 
   const makeMove = useCallback((index: number) => {
-    if (gameState.board[index] !== null || gameState.status !== "playing" || gameState.moveLock) {
+    if (gameState.board[index] !== null || gameState.status !== "playing") {
       return;
     }
 
